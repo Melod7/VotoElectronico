@@ -6,15 +6,13 @@ namespace VotoElectronico.API.Data
     public class VotoElectronicoContext : DbContext
     {
         public VotoElectronicoContext(DbContextOptions<VotoElectronicoContext> options)
-            : base(options)
-        {
-        }
-        public DbSet<Usuario> Usuarios => Set<Usuario>();
-        public DbSet<Rol> Roles => Set<Rol>();
-        public DbSet<Eleccion> Elecciones => Set<Eleccion>();
-        public DbSet<Candidato> Candidatos => Set<Candidato>();
-        public DbSet<Voto> Votos => Set<Voto>();
-        public DbSet<CodigoAutenticacion> CodigosAutenticacion => Set<CodigoAutenticacion>();
+            : base(options) { }
 
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Rol> Roles { get; set; }
+        public DbSet<Eleccion> Elecciones { get; set; }
+        public DbSet<Candidato> Candidatos { get; set; }
+        public DbSet<Voto> Votos { get; set; }
+        public DbSet<CodigoAutenticacion> CodigosAutenticacion { get; set; }
     }
 }

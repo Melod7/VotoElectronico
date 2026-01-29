@@ -8,7 +8,9 @@
         public string Apellidos { get; set; } = string.Empty;
         public string Correo { get; set; } = string.Empty;
         public string Contrasena { get; set; } = string.Empty;
-        public bool EstadoVoto { get; set; }
+        public bool YaVoto { get; set; }
+
+        
 
         public int RolId { get; set; }
         public Rol Rol { get; set; } = null!;
