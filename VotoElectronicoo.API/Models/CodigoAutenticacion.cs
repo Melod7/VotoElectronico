@@ -1,6 +1,6 @@
 ﻿namespace VotoElectronicoo.API.Models
 {
-    public class CodigoAuntenticacion
+    public class CodigoAutenticacion
     {
         public int Id { get; set; }
         public string Codigo { get; set; } = string.Empty;
