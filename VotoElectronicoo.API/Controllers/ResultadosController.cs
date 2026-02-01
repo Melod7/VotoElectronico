@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VotoElectronico.API.Data;
+using VotoElectronicoo.API.Models;
 
 namespace VotoElectronico.API.Controllers
 {

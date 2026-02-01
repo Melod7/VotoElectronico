@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Ingreso de Votante";
+}
+
+<section class="hero-section">
+    <div class="container d-flex justify-content-center align-items-center" style="min-height:80vh;">
+        <div class="card login-card" style="max-width:420px; width:100%;">
+
+            <h4 class="mb-4 text-center">Ingreso de Votante</h4>
+
+            <form method="post" asp-action="Votante">
+
+                <!-- CEDULA -->
+                <div class="mb-3">
+                    <label class="form-label">Número de cédula</label>
+                    <input type="text"
+                           name="cedula"
+                           class="form-control"
+                           placeholder="Ingrese su número de cédula"
+                           required />
+                </div>
+
+                <!-- BOTON GENERAR -->
+                <div class="mb-3">
+                    <button type="submit"
+                            name="accion"
+                            value="generar"
+                            class="btn btn-warning w-100">
+                        Generar código
+                    </button>
+                </div>
+
+                <!-- CODIGO -->
+                <div class="mb-3">
+                    <label class="form-label">Código de verificación</label>
+                    <input type="text"
+                           name="codigo"
+                           class="form-control"
+                           placeholder="Ingrese el código recibido" />
+                </div>
+
+                <!-- INGRESAR -->
+                <button type="submit"
+                        name="accion"
+                        value="validar"
+                        class="btn btn-success w-100">
+                    Ingresar
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</section>

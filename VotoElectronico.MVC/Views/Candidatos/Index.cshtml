@@ -1,0 +1,14 @@
+﻿@model List<VotoElectronico.MVC.Models.Candidato>
+@{
+    Layout = "_Layout";
+}
+
+<h2>Seleccione un candidato</h2>
+
+@foreach (var c in Model)
+{
+    <form asp-controller="Votos" asp-action="Votar" method="post">
+        <input type="hidden" name="candidatoId" value="@c.Id" />
+        <button type="submit">@c.Nombre</button>
+    </form>
+}

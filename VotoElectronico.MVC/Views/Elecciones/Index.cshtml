@@ -1,0 +1,19 @@
+﻿@model List<VotoElectronico.MVC.Models.Eleccion>
+@{
+    Layout = "_Layout";
+}
+
+<h2>Elecciones Disponibles</h2>
+
+<ul>
+    @foreach (var e in Model)
+    {
+        <li>
+            <a asp-controller="Candidatos"
+               asp-action="Index"
+               asp-route-eleccionId="@e.Id">
+                @e.Nombre
+            </a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Ingresar";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2>Ingresar como</h2>
+        <p class="text-muted">Seleccione su tipo de usuario</p>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Votante</h5>
+                    <p class="card-text">
+                        Ingrese con su número de cédula y código de verificación
+                    </p>
+                    <a asp-controller="Votante" asp-action="Login" class="btn btn-success w-100">
+                        Soy Votante
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Administrador</h5>
+                    <p class="card-text">
+                        Acceso exclusivo para administradores del sistema
+                    </p>
+                    <a asp-controller="Admin" asp-action="Login" class="btn btn-danger w-100">
+                        Soy Administrador
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

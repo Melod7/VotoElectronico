@@ -1,8 +1,32 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="text-center mb-4">Sistema de Voto Electrónico</h2>
+<p class="text-center text-muted">
+    Bienvenido al sistema de votación electrónica del Ecuador
+</p>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card-option text-center bg-white">
+            <h4>Ingreso de Votante</h4>
+            <p>Ingrese con su número de cédula</p>
+
+            <a asp-controller="Auth" asp-action="Votante" class="btn btn-votante w-100">
+                Ingresar como Votante
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-option text-center bg-white">
+            <h4>Ingreso de Administrador</h4>
+            <p>Acceso institucional</p>
+
+            <a asp-controller="Auth" asp-action="Administrador" class="btn btn-admin w-100">
+                Ingresar como Administrador
+            </a>
+        </div>
+    </div>
 </div>
