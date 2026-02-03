@@ -1,0 +1,23 @@
+﻿@model List<Candidato>
+
+<h3 class="mb-4">Seleccione su candidato</h3>
+
+<form asp-action="Votar" method="post">
+    @foreach (var c in Model)
+    {
+        <div class="form-check mb-2">
+            <input class="form-check-input"
+                   type="radio"
+                   name="candidatoId"
+                   value="@c.Id"
+                   required />
+            <label class="form-check-label">
+                @c.Nombre
+            </label>
+        </div>
+    }
+
+    <button class="btn btn-success mt-3">
+        Confirmar voto
+    </button>
+</form>

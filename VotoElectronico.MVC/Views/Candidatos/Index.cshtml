@@ -1,14 +1,16 @@
-﻿@model List<VotoElectronico.MVC.Models.Candidato>
-@{
-    Layout = "_Layout";
-}
-
-<h2>Seleccione un candidato</h2>
-
-@foreach (var c in Model)
+﻿@foreach (var candidato in Model.Candidatos)
 {
-    <form asp-controller="Votos" asp-action="Votar" method="post">
-        <input type="hidden" name="candidatoId" value="@c.Id" />
-        <button type="submit">@c.Nombre</button>
-    </form>
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>@candidato.Nombre</h5>
+            <p>@candidato.Partido.Nombre</p>
+
+            <form asp-action="Votar" method="post">
+                <input type="hidden" name="candidatoId" value="@candidato.Id" />
+                <button type="submit" class="btn btn-success">
+                    Votar
+                </button>
+            </form>
+        </div>
+    </div>
 }

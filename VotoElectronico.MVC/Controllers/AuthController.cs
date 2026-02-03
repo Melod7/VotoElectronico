@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VotoElectronico.MVC.Data;
-using VotoElectronico.MVC.ViewModels;
+using VotoElectronico.MVC.Models;
 
 namespace VotoElectronico.MVC.Controllers
 {
@@ -13,56 +14,159 @@ namespace VotoElectronico.MVC.Controllers
             _context = context;
         }
 
-        public IActionResult Votante()
+        // LOGIN ADMINISTRADOR
+        [HttpGet]
+        public IActionResult Administrador()
         {
-            return View(new VotanteLoginViewModel());
+            return View();
         }
 
         [HttpPost]
-        public IActionResult GenerarCodigo(VotanteLoginViewModel model)
+        public IActionResult Administrador(string usuario, string clave)
         {
-            var votante = _context.Votantes.FirstOrDefault(v => v.Cedula == model.Cedula);
+            var admin = _context.Administradores
+                .FirstOrDefault(a => a.Usuario == usuario && a.Clave == clave);
+
+            if (admin == null)
+            {
+                ViewBag.Error = "Credenciales incorrectas";
+                return View();
+            }
+
+            HttpContext.Session.SetString("Rol", "Administrador");
+            HttpContext.Session.SetInt32("AdminId", admin.Id);
+
+            return RedirectToAction("Index", "Admin");
+        }
+
+        // LOGIN JEFE DE JUNTA
+        
+        [HttpGet]
+        public IActionResult JefeJunta()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult JefeJunta(string cedula)
+        {
+            var jefe = _context.JefesJunta.FirstOrDefault(j => j.Cedula == cedula);
+
+            if (jefe == null)
+            {
+                ViewBag.Error = "Cédula no registrada como Jefe de Junta";
+                return View();
+            }
+
+            jefe.CodigoAcceso = GenerarCodigo();
+            jefe.CodigoExpira = DateTime.Now.AddMinutes(10);
+
+            _context.SaveChanges();
+
+            ViewBag.Codigo = jefe.CodigoAcceso;
+            ViewBag.Mesa = jefe.Mesa;
+
+            return View("CodigoJefeJunta");
+        }
+
+        // INGRESO VOTANTE
+        [HttpGet]
+        public IActionResult Votante()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult GenerarCodigo(string cedula)
+        {
+            var votante = _context.Votantes.FirstOrDefault(v => v.Cedula == cedula);
 
             if (votante == null)
             {
-                model.MensajeError = "La cédula no consta en el padrón.";
-                return View("Votante", model);
+                ViewBag.Error = "La cédula no existe en el padrón.";
+                return View("JefeJunta");
             }
 
             if (votante.YaVoto)
             {
-                model.MensajeError = "Usted ya ha votado.";
-                return View("Votante", model);
+                ViewBag.Error = "Este votante ya sufragó.";
+                return View("JefeJunta");
             }
 
-            model.CodigoGenerado = GenerarCodigoRandom();
+            var codigo = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
 
-            HttpContext.Session.SetString("Codigo", model.CodigoGenerado);
-            HttpContext.Session.SetString("Cedula", model.Cedula);
+            votante.CodigoVotacion = codigo;
+            votante.CodigoExpira = DateTime.Now.AddMinutes(10);
 
-            return View("Votante", model);
+            _context.SaveChanges();
+
+            ViewBag.Codigo = codigo;
+            return View("JefeJunta");
         }
-
         [HttpPost]
-        public IActionResult ValidarCodigo(VotanteLoginViewModel model)
+        public IActionResult ValidarVotante(string cedula, string codigo)
         {
-            var codigo = HttpContext.Session.GetString("Codigo");
+            var votante = _context.Votantes.FirstOrDefault(v =>
+                v.Cedula == cedula &&
+                v.CodigoVotacion == codigo
+            );
 
-            if (codigo != model.CodigoIngresado)
+            if (votante == null)
             {
-                model.MensajeError = "Código incorrecto.";
-                return View("Votante", model);
+                ViewBag.Error = "Cédula o código incorrectos.";
+                return View("Votante");
             }
+
+            if (votante.YaVoto)
+            {
+                ViewBag.Error = "Este votante ya sufragó.";
+                return View("Votante");
+            }
+
+            if (votante.CodigoExpira == null || votante.CodigoExpira < DateTime.Now)
+            {
+                ViewBag.Error = "El código ha expirado.";
+                return View("Votante");
+            }
+
+            // Guardar sesión
+            HttpContext.Session.SetString("Cedula", votante.Cedula);
+            HttpContext.Session.SetInt32("VotanteId", votante.Id);
 
             return RedirectToAction("Index", "Votacion");
         }
 
-        private string GenerarCodigoRandom()
+        [HttpPost]
+        public IActionResult IngresarVotar(string cedula, string codigo)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, 6)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            var votante = _context.Votantes.FirstOrDefault(v =>
+                v.Cedula == cedula &&
+                v.CodigoVotacion == codigo &&
+                v.CodigoExpira > DateTime.Now);
+
+            if (votante == null)
+            {
+                TempData["Error"] = "Código incorrecto o expirado";
+                return RedirectToAction("Votante");
+            }
+
+            HttpContext.Session.SetString("Rol", "Votante");
+            HttpContext.Session.SetInt32("VotanteId", votante.Id);
+
+            return RedirectToAction("Index", "Votacion");
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+        private string GenerarCodigo()
+        {
+            return Guid.NewGuid()
+                .ToString("N")
+                .Substring(0, 6)
+                .ToUpper();
         }
     }
 }

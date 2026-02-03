@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Jefe de Junta";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h3 class="text-center mb-3">Jefe de Junta</h3>
+            <p class="text-muted text-center">
+                Ingrese la cédula del votante para autorizar el voto
+            </p>
+
+            <form asp-action="GenerarCodigo" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Cédula del votante</label>
+                    <input name="cedula" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    Generar código
+                </button>
+            </form>
+
+            @if (ViewBag.Codigo != null)
+            {
+                <hr />
+                <div class="alert alert-info text-center">
+                    <strong>Código generado:</strong><br />
+                    <span class="fs-4">@ViewBag.Codigo</span>
+                </div>
+            }
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger mt-3">
+                    @ViewBag.Error
+                </div>
+            }
+        </div>
+    </div>
+</div>

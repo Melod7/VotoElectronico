@@ -14,5 +14,6 @@ namespace VotoElectronico.API.Data
         public DbSet<Candidato> Candidatos { get; set; }
         public DbSet<Voto> Votos { get; set; }
         public DbSet<CodigoAutenticacion> CodigosAutenticacion { get; set; }
+        public DbSet<Bitacora > Bitacoras { get; set; }
     }
 }

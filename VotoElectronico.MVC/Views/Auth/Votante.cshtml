@@ -1,49 +1,38 @@
-﻿@model VotoElectronico.MVC.ViewModels.VotanteLoginViewModel
-@using VotoElectronico.MVC.Models.ViewModels
+﻿@{
+    ViewData["Title"] = "Ingreso de Votante";
+}
 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="text-center mb-3">Ingreso de Votante</h4>
 
-<div class="card shadow p-4" style="max-width:420px;margin:auto;">
-    <h4 class="text-center mb-3">Ingreso de Votante</h4>
+                    <form asp-action="ValidarVotante" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Cédula</label>
+                            <input name="cedula" class="form-control" required />
+                        </div>
 
-    @if (!string.IsNullOrEmpty(Model.MensajeError))
-    {
-        <div class="alert alert-danger">@Model.MensajeError</div>
-    }
+                        <div class="mb-3">
+                            <label class="form-label">Código de votación</label>
+                            <input name="codigo" class="form-control" required />
+                        </div>
 
-    <!-- FORM 1: GENERAR CÓDIGO -->
-    <form asp-action="GenerarCodigo" method="post">
-        <div class="mb-3">
-            <label>Número de cédula</label>
-            <input asp-for="Cedula" class="form-control" />
-        </div>
+                        <button class="btn btn-primary w-100">
+                            Ingresar a votar
+                        </button>
+                    </form>
 
-        <button class="btn btn-primary w-100">
-            Generar código
-        </button>
-    </form>
-
-    @if (!string.IsNullOrEmpty(Model.CodigoGenerado))
-    {
-        <hr />
-
-        <div class="alert alert-info text-center">
-            Código generado: <strong>@Model.CodigoGenerado</strong>
-        </div>
-
-        <!-- FORM 2: VALIDAR CÓDIGO -->
-        <form asp-action="ValidarCodigo" method="post">
-            <input type="hidden" asp-for="Cedula" />
-            <input type="hidden" asp-for="CodigoGenerado" />
-            <input type="hidden" asp-for="CodigoGenerado" />
-
-            <div class="mb-3">
-                <label>Código de verificación</label>
-                <input asp-for="CodigoIngresado" class="form-control" />
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>
             </div>
-
-            <button class="btn btn-success w-100">
-                Ingresar a votar
-            </button>
-        </form>
-    }
+        </div>
+    </div>
 </div>

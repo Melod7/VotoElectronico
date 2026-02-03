@@ -1,0 +1,21 @@
+﻿@model VotoElectronico.MVC.ViewModels.ValidarCodigoViewModel
+
+<h2>Validar código</h2>
+
+<form asp-action="ValidarCodigo" method="post">
+    <div class="form-group">
+        <label>Código recibido</label>
+        <input asp-for="CodigoIngresado" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2">
+        Continuar a votar
+    </button>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alert alert-danger mt-2">
+            @Model.Error
+        </div>
+    }
+</form>

@@ -43,6 +43,58 @@ namespace VotoElectronico.MVC.Migrations
                     b.ToTable("Administradores");
                 });
 
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Candidato", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Cargo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PartidoId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartidoId");
+
+                    b.ToTable("Candidatos");
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Eleccion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("FechaFin")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Elecciones");
+                });
+
             modelBuilder.Entity("VotoElectronico.MVC.Models.Partido", b =>
                 {
                     b.Property<int>("Id")
@@ -51,11 +103,16 @@ namespace VotoElectronico.MVC.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("EleccionId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EleccionId");
 
                     b.ToTable("Partidos");
                 });
@@ -96,15 +153,88 @@ namespace VotoElectronico.MVC.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CandidatoId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PartidoId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("VotanteId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CandidatoId");
+
+                    b.HasIndex("PartidoId");
+
+                    b.HasIndex("VotanteId");
+
                     b.ToTable("Votos");
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Candidato", b =>
+                {
+                    b.HasOne("VotoElectronico.MVC.Models.Partido", "Partido")
+                        .WithMany("Candidatos")
+                        .HasForeignKey("PartidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Partido");
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Partido", b =>
+                {
+                    b.HasOne("VotoElectronico.MVC.Models.Eleccion", null)
+                        .WithMany("Partidos")
+                        .HasForeignKey("EleccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Voto", b =>
+                {
+                    b.HasOne("VotoElectronico.MVC.Models.Candidato", "Candidato")
+                        .WithMany()
+                        .HasForeignKey("CandidatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VotoElectronico.MVC.Models.Partido", "Partido")
+                        .WithMany()
+                        .HasForeignKey("PartidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VotoElectronico.MVC.Models.Votante", "Votante")
+                        .WithMany()
+                        .HasForeignKey("VotanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
+
+                    b.Navigation("Partido");
+
+                    b.Navigation("Votante");
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Eleccion", b =>
+                {
+                    b.Navigation("Partidos");
+                });
+
+            modelBuilder.Entity("VotoElectronico.MVC.Models.Partido", b =>
+                {
+                    b.Navigation("Candidatos");
                 });
 #pragma warning restore 612, 618
         }

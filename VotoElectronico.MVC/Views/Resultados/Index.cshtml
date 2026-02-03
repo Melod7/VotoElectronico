@@ -1,0 +1,55 @@
+﻿@model List<VotoElectronico.MVC.ViewModels.ResultadoViewModel>
+
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+<h2 class="mb-4">Resultados Generales</h2>
+
+<p><strong>Total de votos:</strong> @ViewBag.TotalVotos</p>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Candidato</th>
+            <th>Votos</th>
+            <th>Porcentaje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Candidato</td>
+                <td>@r.TotalVotos</td>
+                <td>@r.Porcentaje.ToString("0.00") %</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h4>Gráfica de resultados</h4>
+
+<canvas id="grafico"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('grafico');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Candidato))),
+            datasets: [{
+                label: 'Votos',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalVotos))),
+                backgroundColor: '#0d6efd'
+            }]
+        }
+    });
+</script>
+
+  

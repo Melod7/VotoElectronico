@@ -1,15 +1,25 @@
-﻿namespace VotoElectronico.MVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
+
+namespace VotoElectronico.MVC.Models
 {
     public class Votante
     {
         public int Id { get; set; }
 
-        public required string Cedula { get; set; }
+        public string Cedula { get; set; } = string.Empty;
+        public string Nombres { get; set; } = string.Empty;
+        public string Apellidos { get; set; } = string.Empty;
+        public string Mesa { get; set; } = string.Empty;
 
-        public required string Nombres { get; set; }
-
-        public required string Apellidos { get; set; }
+        public string? CodigoVotacion { get; set; }
+        public DateTime? CodigoExpira { get; set; }
 
         public bool YaVoto { get; set; }
     }
 }
+
+
+
+
+        

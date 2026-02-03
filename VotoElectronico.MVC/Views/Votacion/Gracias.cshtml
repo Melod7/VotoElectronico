@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Voto Registrado";
+}
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 80vh;">
+
+    <div class="card shadow-lg p-5 text-center"
+         style="max-width: 500px; width: 100%; border-radius: 15px;">
+
+        <div class="mb-4">
+            <i class="bi bi-check-circle-fill text-success"
+               style="font-size: 4rem;"></i>
+        </div>
+
+        <h3 class="fw-bold text-success">
+            ¡Voto registrado correctamente!
+        </h3>
+
+        <p class="text-muted mt-3">
+            Su voto ha sido registrado de forma segura y confidencial.
+            <br />
+            Gracias por participar en el proceso democrático.
+        </p>
+
+        <div class="alert alert-info mt-4">
+            <strong>Importante:</strong><br />
+            No podrá volver a votar en este proceso electoral.
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-primary">
+                ⬅ Volver al inicio
+            </a>
+        </div>
+
+        <div class="mt-4 text-muted small">
+            Consejo Nacional Electoral<br />
+            Sistema de Voto Electrónico
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<dynamic>
+
+<h2>📊 Resultados Generales</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Partido</th>
+            <th>Votos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Partido</td>
+                <td>@r.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>

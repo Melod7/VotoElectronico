@@ -2,9 +2,9 @@
 
 <h3>Administrador</h3>
 
-@if (!string.IsNullOrEmpty(Model.MensajeError))
+@if (!string.IsNullOrEmpty(Model.Error))
 {
-    <div class="alert alert-danger">@Model.MensajeError</div>
+    <div class="alert alert-danger">@Model.Error</div>
 }
 
 <form method="post">

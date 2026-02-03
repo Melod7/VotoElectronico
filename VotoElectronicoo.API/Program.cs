@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using VotoElectronico.API.Data;
+using VotoElectronico.MVC.Data;
+using VotoElectronicoo.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BitacoraService>();
 builder.Services.AddDbContext<VotoElectronicoContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

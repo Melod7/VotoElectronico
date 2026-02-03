@@ -1,0 +1,40 @@
+﻿@model List<Votante>
+
+<h3>📋 Padrón Electoral</h3>
+
+<form asp-action="CrearVotante" method="post" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input name="Cedula" class="form-control" placeholder="Cédula" required />
+    </div>
+    <div class="col-md-4">
+        <input name="Nombre" class="form-control" placeholder="Nombre completo" required />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-success">Registrar</button>
+    </div>
+</form>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>¿Votó?</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <td>@v.Cedula</td>
+                <td>@v.Nombres</td>
+                <td>@(v.YaVoto ? "Sí" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

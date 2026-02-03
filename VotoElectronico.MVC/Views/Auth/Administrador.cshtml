@@ -1,34 +1,33 @@
-﻿@model VotoElectronico.MVC.ViewModels.VotanteLoginViewModel
-@{
-    ViewData["Title"] = "Ingreso de Administrador";
+﻿@{
+    ViewData["Title"] = "Administrador";
 }
 
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h3 class="text-center mb-3">Ingreso de Administrador</h3>
+    <div class="card shadow">
+        <div class="card-body text-center">
+            <h2 class="mb-3">Panel de Administrador</h2>
+            <p class="text-muted">
+                Desde aquí se administrará el sistema de votación,
+                resultados, gráficos y bitácora.
+            </p>
 
-                    <form method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Correo institucional</label>
-                            <input type="email"
-                                   class="form-control"
-                                   placeholder="correo@institucion.gob.ec">
-                        </div>
+            <hr />
 
-                        <div class="mb-3">
-                            <label class="form-label">Contraseña</label>
-                            <input type="password"
-                                   class="form-control"
-                                   placeholder="********">
-                        </div>
-
-                        <button class="btn btn-warning w-100">
-                            Ingresar
-                        </button>
-                    </form>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-primary">
+                        Resultados (próximamente)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-success">
+                        Gráficas (próximamente)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-warning">
+                        Bitácora (próximamente)
+                    </div>
                 </div>
             </div>
         </div>

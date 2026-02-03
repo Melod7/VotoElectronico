@@ -1,6 +1,23 @@
 ﻿@{
-    Layout = "_Layout";
+    ViewData["Title"] = "Gracias por votar";
 }
 
-<h2>Voto registrado</h2>
-<p>Gracias por participar en el proceso electoral.</p>
+<div class="container text-center mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-success mb-3">¡Voto registrado correctamente!</h2>
+
+        <p class="fs-5">
+            Gracias por participar en el proceso democrático.
+        </p>
+
+        <p class="text-muted">
+            Su voto ha sido almacenado de forma segura.
+        </p>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-primary mt-3">
+            Volver al inicio
+        </a>
+    </div>
+</div>

@@ -2,31 +2,68 @@
     ViewData["Title"] = "Inicio";
 }
 
-<h2 class="text-center mb-4">Sistema de Voto Electrónico</h2>
-<p class="text-center text-muted">
-    Bienvenido al sistema de votación electrónica del Ecuador
-</p>
-
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card-option text-center bg-white">
-            <h4>Ingreso de Votante</h4>
-            <p>Ingrese con su número de cédula</p>
-
-            <a asp-controller="Auth" asp-action="Votante" class="btn btn-votante w-100">
-                Ingresar como Votante
-            </a>
+<div class="container mt-5">
+    <div class="row justify-content-center text-center mb-4">
+        <div class="col-md-8">
+            <h2 class="fw-bold">Sistema de Voto Electrónico</h2>
+            <p class="text-muted">
+                Plataforma segura, auditable y transparente
+            </p>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card-option text-center bg-white">
-            <h4>Ingreso de Administrador</h4>
-            <p>Acceso institucional</p>
+    <div class="row justify-content-center g-4">
 
-            <a asp-controller="Auth" asp-action="Administrador" class="btn btn-admin w-100">
-                Ingresar como Administrador
-            </a>
+        <!-- VOTANTE -->
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">👤 Votante</h5>
+                    <p class="card-text">
+                        Ingrese con su cédula y código para ejercer su derecho al voto.
+                    </p>
+                    <a asp-controller="Auth"
+                       asp-action="Votante"
+                       class="btn btn-primary w-100">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <!-- JEFE DE JUNTA -->
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success">✔ Jefe de Junta</h5>
+                    <p class="card-text">
+                        Verifique votantes y genere códigos de votación.
+                    </p>
+                    <a asp-controller="Auth"
+                       asp-action="JefeJunta"
+                       class="btn btn-success w-100">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMINISTRADOR -->
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">⚙ Administrador</h5>
+                    <p class="card-text">
+                        Administre elecciones y consulte resultados.
+                    </p>
+                    <a asp-controller="Auth"
+                       asp-action="Administrador"
+                       class="btn btn-warning w-100">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

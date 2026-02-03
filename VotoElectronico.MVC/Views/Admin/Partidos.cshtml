@@ -1,0 +1,15 @@
+﻿@model List<Partido>
+
+<h3>🏳️ Partidos Políticos</h3>
+
+<form asp-action="CrearPartido" method="post" class="mb-4">
+    <input name="Nombre" class="form-control mb-2" placeholder="Nombre del partido" required />
+    <button class="btn btn-primary">Agregar</button>
+</form>
+
+<ul class="list-group">
+    @foreach (var p in Model)
+    {
+        <li class="list-group-item">@p.Nombre</li>
+    }
+</ul>

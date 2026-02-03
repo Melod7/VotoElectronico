@@ -1,39 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VotoElectronico.MVC.Data;
 using VotoElectronico.MVC.Models;
+using System;
 
-namespace VotoElectronico.MVC.Controllers
+public class VotacionController : Controller
 {
-    public class VotacionController : Controller
+    private readonly ApplicationDbContext _context;
+    public VotacionController(ApplicationDbContext context) => _context = context;
+
+    public IActionResult Index()
     {
-        private readonly ApplicationDbContext _context;
+        var votanteId = HttpContext.Session.GetInt32("VotanteId");
 
-        public VotacionController(ApplicationDbContext context)
+        if (votanteId == null)
+            return RedirectToAction("Votante", "Auth");
+
+        var candidatos = _context.Candidatos.ToList();
+        return View(candidatos);
+    }
+
+    [HttpPost]
+    public IActionResult Votar(int candidatoId)
+    {
+        var votanteId = HttpContext.Session.GetInt32("VotanteId");
+        if (votanteId == null)
+            return RedirectToAction("Votante", "Auth");
+
+        var votante = _context.Votantes.Find(votanteId);
+        if (votante == null || votante.YaVoto)
+            return RedirectToAction("Votante", "Auth");
+
+        var voto = new Voto
         {
-            _context = context;
-        }
+            CandidatoId = candidatoId,
+            Fecha = DateTime.Now
+        };
 
-        public IActionResult Index()
-        {
-            return View(_context.Partidos.ToList());
-        }
+        _context.Votos.Add(voto);
 
-        [HttpPost]
-        public IActionResult Votar(int partidoId)
-        {
-            var cedula = HttpContext.Session.GetString("Cedula");
-            var votante = _context.Votantes.First(v => v.Cedula == cedula);
+        votante.YaVoto = true;
+        votante.CodigoVotacion = null;
+        votante.CodigoExpira = null;
 
-            _context.Votos.Add(new Voto
-            {
-                PartidoId = partidoId,
-                Fecha = DateTime.Now
-            });
+        _context.SaveChanges();
 
-            votante.YaVoto = true;
-            _context.SaveChanges();
+        HttpContext.Session.Clear();
 
-            return View("Confirmacion");
-        }
+        return RedirectToAction("Gracias");
     }
 }
+
+    
