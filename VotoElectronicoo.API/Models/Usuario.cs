@@ -11,5 +11,8 @@
         public bool YaVoto { get; set; }
         public int RolId { get; set; }
         public Rol Rol { get; set; } = null!;
+
+        public string? CodigoVotacion { get; set; } 
+        public DateTime? CodigoExpira { get; set; }
     }
 }

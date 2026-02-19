@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Jefe de Junta";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
+        min-height: 100vh;
+        font-family: 'Segoe UI';
+    }
+
+    .card-principal {
+        background: white;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0px 10px 35px rgba(0,0,0,0.25);
+        max-width: 600px;
+        margin: auto;
+        margin-top: 90px;
+        text-align: center;
+    }
+
+    .titulo {
+        font-weight: bold;
+        color: #0d47a1;
+    }
+
+    .btn-acceso {
+        background: #2e7d32;
+        border: none;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+        .btn-acceso:hover {
+            background: #1b5e20;
+        }
+
+    .btn-volver {
+        background: #546e7a;
+        border: none;
+        font-weight: bold;
+    }
+
+        .btn-volver:hover {
+            background: #37474f;
+        }
+
+    .logo {
+        font-size: 50px;
+    }
+</style>
+
+<div class="container">
+
+    <div class="card-principal">
+
+        <div class="logo">🗳️</div>
+
+        <h2 class="titulo mb-3">Jefe de Junta Electoral</h2>
+
+        <p class="text-muted">
+            Sistema de Voto Electrónico Ecuador
+        </p>
+
+        <hr />
+
+        <p class="mb-4">
+            Desde este módulo podrá:
+            <br />
+            ✔ Validar votantes
+            ✔ Generar códigos de votación
+            ✔ Controlar el proceso electoral en mesa
+        </p>
+
+        <a href="/JefeJunta/Login" class="btn btn-acceso text-white w-100 mb-3">
+            Ingresar al sistema
+        </a>
+
+        <a href="/" class="btn btn-volver text-white w-100">
+            Volver al inicio general
+        </a>
+
+    </div>
+
+</div>

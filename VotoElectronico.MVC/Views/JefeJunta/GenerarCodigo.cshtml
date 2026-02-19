@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Generar código";
+}
+
+<style>
+    .pantalla {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .card-voto {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 450px;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    .btn-generar {
+        background: #007bff;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        color: white;
+        margin-top: 20px;
+    }
+
+        .btn-generar:hover {
+            background: #0069d9;
+        }
+</style>
+
+<div class="pantalla">
+
+    <div class="card-voto">
+
+        <h2>Generar código de votación</h2>
+
+        <p>Cédula del votante:</p>
+        <h4>@ViewBag.Cedula</h4>
+
+        <form method="post" action="/JefeJunta/GenerarCodigoPost">
+            <input type="hidden" name="cedula" value="@ViewBag.Cedula" />
+
+            <button type="submit" class="btn-generar">
+                Generar código
+            </button>
+        </form>
+
+    </div>
+
+</div>

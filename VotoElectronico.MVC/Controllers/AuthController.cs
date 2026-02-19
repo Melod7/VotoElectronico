@@ -1,172 +1,128 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using VotoElectronico.MVC.Data;
-using VotoElectronico.MVC.Models;
+using System.Text;
+using System.Text.Json;
 
 namespace VotoElectronico.MVC.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _http;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(IHttpClientFactory factory)
         {
-            _context = context;
+            _http = factory.CreateClient("API");
         }
 
-        // LOGIN ADMINISTRADOR
-        [HttpGet]
-        public IActionResult Administrador()
+        // ================================
+        // LOGIN ADMIN
+        // ================================
+        public IActionResult LoginAdmin()
         {
             return View();
         }
 
+        // LOGIN ADMIN POST  
         [HttpPost]
-        public IActionResult Administrador(string usuario, string clave)
+        public async Task<IActionResult> LoginAdmin(string correo, string password)
         {
-            var admin = _context.Administradores
-                .FirstOrDefault(a => a.Usuario == usuario && a.Clave == clave);
-
-            if (admin == null)
+            var datos = new
             {
-                ViewBag.Error = "Credenciales incorrectas";
-                return View();
-            }
+                correo = correo,
+                password = password
+            };
 
-            HttpContext.Session.SetString("Rol", "Administrador");
-            HttpContext.Session.SetInt32("AdminId", admin.Id);
-
-            return RedirectToAction("Index", "Admin");
-        }
-
-        // LOGIN JEFE DE JUNTA
-        
-        [HttpGet]
-        public IActionResult JefeJunta()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult JefeJunta(string cedula)
-        {
-            var jefe = _context.JefesJunta.FirstOrDefault(j => j.Cedula == cedula);
-
-            if (jefe == null)
-            {
-                ViewBag.Error = "Cédula no registrada como Jefe de Junta";
-                return View();
-            }
-
-            jefe.CodigoAcceso = GenerarCodigo();
-            jefe.CodigoExpira = DateTime.Now.AddMinutes(10);
-
-            _context.SaveChanges();
-
-            ViewBag.Codigo = jefe.CodigoAcceso;
-            ViewBag.Mesa = jefe.Mesa;
-
-            return View("CodigoJefeJunta");
-        }
-
-        // INGRESO VOTANTE
-        [HttpGet]
-        public IActionResult Votante()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult GenerarCodigo(string cedula)
-        {
-            var votante = _context.Votantes.FirstOrDefault(v => v.Cedula == cedula);
-
-            if (votante == null)
-            {
-                ViewBag.Error = "La cédula no existe en el padrón.";
-                return View("JefeJunta");
-            }
-
-            if (votante.YaVoto)
-            {
-                ViewBag.Error = "Este votante ya sufragó.";
-                return View("JefeJunta");
-            }
-
-            var codigo = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
-
-            votante.CodigoVotacion = codigo;
-            votante.CodigoExpira = DateTime.Now.AddMinutes(10);
-
-            _context.SaveChanges();
-
-            ViewBag.Codigo = codigo;
-            return View("JefeJunta");
-        }
-        [HttpPost]
-        public IActionResult ValidarVotante(string cedula, string codigo)
-        {
-            var votante = _context.Votantes.FirstOrDefault(v =>
-                v.Cedula == cedula &&
-                v.CodigoVotacion == codigo
+            var json = new StringContent(
+                JsonSerializer.Serialize(datos),
+                Encoding.UTF8,
+                "application/json"
             );
 
-            if (votante == null)
+            var response = await _http.PostAsync("api/Auth/login-admin", json);
+
+            if (response.IsSuccessStatusCode)
             {
-                ViewBag.Error = "Cédula o código incorrectos.";
-                return View("Votante");
+                // login correcto → ir panel admin  
+                return RedirectToAction("PanelAdmin", "Admin");
             }
 
-            if (votante.YaVoto)
-            {
-                ViewBag.Error = "Este votante ya sufragó.";
-                return View("Votante");
-            }
+            ViewBag.Error = "Correo o contraseña incorrectos";
+            return View();
+        }
 
-            if (votante.CodigoExpira == null || votante.CodigoExpira < DateTime.Now)
-            {
-                ViewBag.Error = "El código ha expirado.";
-                return View("Votante");
-            }
 
-            // Guardar sesión
-            HttpContext.Session.SetString("Cedula", votante.Cedula);
-            HttpContext.Session.SetInt32("VotanteId", votante.Id);
 
-            return RedirectToAction("Index", "Votacion");
+        // ================================
+        // LOGIN JEFE JUNTA
+        // ================================
+
+       
+        public IActionResult LoginJefe()
+        {
+            return View();
         }
 
         [HttpPost]
-        public IActionResult IngresarVotar(string cedula, string codigo)
+        public async Task<IActionResult> LoginJefe(string correo, string clave)
         {
-            var votante = _context.Votantes.FirstOrDefault(v =>
-                v.Cedula == cedula &&
-                v.CodigoVotacion == codigo &&
-                v.CodigoExpira > DateTime.Now);
-
-            if (votante == null)
+            var datos = new
             {
-                TempData["Error"] = "Código incorrecto o expirado";
-                return RedirectToAction("Votante");
+                correo = correo,
+                password = clave
+            };
+
+            var json = new StringContent(
+                JsonSerializer.Serialize(datos),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await _http.PostAsync("api/JefeJunta/login", json);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Panel", "JefeJunta");
             }
 
-            HttpContext.Session.SetString("Rol", "Votante");
-            HttpContext.Session.SetInt32("VotanteId", votante.Id);
-
-            return RedirectToAction("Index", "Votacion");
+            ViewBag.Error = "Credenciales incorrectas";
+            return View();
         }
 
-        public IActionResult Logout()
+
+
+
+        // ================================
+        // LOGIN VOTANTE (con código)
+        // ================================
+
+        public IActionResult LoginVotante()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return View();
         }
-        private string GenerarCodigo()
+
+        [HttpPost]
+        public async Task<IActionResult> LoginVotante(string cedula, string codigo)
         {
-            return Guid.NewGuid()
-                .ToString("N")
-                .Substring(0, 6)
-                .ToUpper();
+            var datos = new
+            {
+                cedula = cedula,
+                codigo = codigo
+            };
+
+            var json = new StringContent(
+                JsonSerializer.Serialize(datos),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await _http.PostAsync("api/Votos/validar", json);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Candidatos", "Votacion");
+            }
+
+            ViewBag.Error = "Código incorrecto o ya votó";
+            return View();
         }
     }
 }

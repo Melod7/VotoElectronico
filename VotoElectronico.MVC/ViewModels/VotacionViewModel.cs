@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
-using VotoElectronico.MVC.Models;
-public class VotacionViewModel
+﻿using VotoElectronico.MVC.Models;
+
+namespace VotoElectronico.MVC.Models
 {
-    public List<Partido> Partidos { get; set; } = new();
-    public int PartidoId { get; set; }
-    public string PartidoNombre { get; set; } = string.Empty;
-    public  string? Presidente { get; set; } 
-    public  string? Vicepresidente { get; set; } 
+    public class VotacionViewModel
+    {
+        public string Cedula { get; set; } = "";
+        public string Codigo { get; set; } = "";
+        public int IdCandidato { get; set; }
+
+        public List<Candidato> Candidatos { get; set; } = new List<Candidato>();
+
+        public string Mensaje { get; set; } = "";
+    }
 }

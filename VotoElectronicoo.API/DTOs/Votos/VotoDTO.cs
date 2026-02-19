@@ -2,9 +2,7 @@
 {
     public class VotoDTO
     {
-        public int EleccionId { get; set; } 
+        public string Cedula { get; set; } = string.Empty;
         public int CandidatoId { get; set; }
-        public int UsuarioId { get; set; }
-
     }
 }

@@ -1,0 +1,14 @@
+﻿<h2>Ingreso votante</h2>
+
+<form asp-action="Validar" method="post">
+    <input name="cedula" class="form-control" placeholder="Cédula" />
+    <br />
+    <input name="codigo" class="form-control" placeholder="Código" />
+    <br />
+    <button class="btn btn-success">Ingresar a votar</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}

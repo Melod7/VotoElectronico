@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Código generado";
+}
+
+<style>
+    .pantalla {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #42275a, #734b6d);
+    }
+
+    .card-voto {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 500px;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    .codigo {
+        font-size: 48px;
+        font-weight: bold;
+        color: #28a745;
+        margin: 20px 0;
+        letter-spacing: 5px;
+    }
+
+    .btn-ir {
+        background: #007bff;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .btn-salir {
+        background: #dc3545;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        color: white;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="pantalla">
+
+    <div class="card-voto">
+
+        <h3>Sistema de Voto Electrónico Ecuador</h3>
+
+        <p>Cédula: @ViewBag.Cedula</p>
+
+        <div class="codigo">
+            @ViewBag.Codigo
+        </div>
+
+        <p>Entregue este código al votante para emitir su voto.</p>
+
+        <a href="/Votacion/Ingresar" class="btn-ir">
+            Ir a pantalla de votación
+        </a>
+
+        <a href="/JefeJunta/Login" class="btn-salir">
+            Salir
+        </a>
+
+    </div>
+
+</div>

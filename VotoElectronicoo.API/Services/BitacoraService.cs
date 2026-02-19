@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using VotoElectronico.API.Data;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.Models;
 
 
@@ -27,9 +27,7 @@ namespace VotoElectronicoo.API.Services
             {
                 Rol = rol,
                 Accion = accion,
-                Descripcion = descripcion,
                 Fecha = DateTime.UtcNow,
-                Ip = ip
             });
 
             _context.SaveChanges();

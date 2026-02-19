@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using VotoElectronico.API.Data;
+using VotoElectronicoo.API.Data;
 
 #nullable disable
 
@@ -22,6 +22,41 @@ namespace VotoElectronicoo.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("VotoElectronicoo.API.Models.Bitacora", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Accion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bitacoras");
+                });
+
             modelBuilder.Entity("VotoElectronicoo.API.Models.Candidato", b =>
                 {
                     b.Property<int>("Id")
@@ -34,16 +69,25 @@ namespace VotoElectronicoo.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("EleccionId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Partido")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EleccionId");
+
                     b.ToTable("Candidatos");
                 });
 
-            modelBuilder.Entity("VotoElectronicoo.API.Models.CodigoAutenticacion", b =>
+            modelBuilder.Entity("VotoElectronicoo.API.Models.CodigoVotacion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,22 +95,23 @@ namespace VotoElectronicoo.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Codigo")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Estado")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("FechaExpiracion")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("integer");
+                    b.Property<bool>("Usado")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CodigosAutenticacion");
+                    b.ToTable("CodigosVotacion");
                 });
 
             modelBuilder.Entity("VotoElectronicoo.API.Models.Eleccion", b =>
@@ -76,6 +121,9 @@ namespace VotoElectronicoo.API.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("FechaFin")
                         .HasColumnType("timestamp with time zone");
@@ -125,6 +173,12 @@ namespace VotoElectronicoo.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("CodigoExpira")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CodigoVotacion")
+                        .HasColumnType("text");
+
                     b.Property<string>("Contrasena")
                         .IsRequired()
                         .HasColumnType("text");
@@ -133,9 +187,6 @@ namespace VotoElectronicoo.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("EstadoVoto")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Nombres")
                         .IsRequired()
                         .HasColumnType("text");
@@ -143,11 +194,59 @@ namespace VotoElectronicoo.API.Migrations
                     b.Property<int>("RolId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("YaVoto")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RolId");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("VotoElectronicoo.API.Models.Votante", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CodigoExpira")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CodigoVerificacion")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Mesa")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("MesaId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Recinto")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("YaVoto")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Votantes");
                 });
 
             modelBuilder.Entity("VotoElectronicoo.API.Models.Voto", b =>
@@ -161,6 +260,13 @@ namespace VotoElectronicoo.API.Migrations
                     b.Property<int>("CandidatoId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("EleccionId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("timestamp with time zone");
 
@@ -171,9 +277,22 @@ namespace VotoElectronicoo.API.Migrations
 
                     b.HasIndex("CandidatoId");
 
+                    b.HasIndex("EleccionId");
+
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Votos");
+                });
+
+            modelBuilder.Entity("VotoElectronicoo.API.Models.Candidato", b =>
+                {
+                    b.HasOne("VotoElectronicoo.API.Models.Eleccion", "Eleccion")
+                        .WithMany()
+                        .HasForeignKey("EleccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Eleccion");
                 });
 
             modelBuilder.Entity("VotoElectronicoo.API.Models.Usuario", b =>
@@ -195,6 +314,12 @@ namespace VotoElectronicoo.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VotoElectronicoo.API.Models.Eleccion", "Eleccion")
+                        .WithMany()
+                        .HasForeignKey("EleccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("VotoElectronicoo.API.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
@@ -202,6 +327,8 @@ namespace VotoElectronicoo.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Candidato");
+
+                    b.Navigation("Eleccion");
 
                     b.Navigation("Usuario");
                 });

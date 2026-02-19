@@ -1,0 +1,93 @@
+﻿@model List<VotoElectronico.MVC.Models.Votante>
+
+@{
+    ViewData["Title"] = "Votantes por mesa";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #0d47a1, #1976d2);
+        font-family: 'Segoe UI';
+    }
+
+    .card {
+        margin: auto;
+        margin-top: 40px;
+        max-width: 900px;
+        padding: 25px;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    }
+
+    .estado-ok {
+        color: green;
+        font-weight: bold;
+    }
+
+    .estado-pendiente {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<div class="card">
+
+    <h3 class="text-center mb-4">🗳️ Votantes por mesa</h3>
+
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="number" name="mesaId" class="form-control" placeholder="Ingrese número de mesa" required />
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary w-100">Buscar votantes</button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model != null)
+    {
+        <hr />
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Recinto</th>
+                    <th>Mesa</th>
+                    <th>¿Votó?</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var v in Model)
+                {
+                    <tr>
+                        <td>@v.Cedula</td>
+                        <td>@v.Nombres</td>
+                        <td>@v.Apellidos</td>
+                        <td>@v.Recinto</td>
+                        <td>@v.Mesa</td>
+                        <td>@v.¿Votó?</td>
+
+                        <td>
+                            @if (v.YaVoto)
+                            {
+                                <span class="estado-ok">Ya votó</span>
+                            }
+                            else
+                            {
+                                <span class="estado-pendiente">Pendiente</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>

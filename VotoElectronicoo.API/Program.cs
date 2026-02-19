@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using VotoElectronico.API.Data;
-using VotoElectronico.MVC.Data;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.Services;
+using QuestPDF.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
+
+
 
 
 builder.Services.AddControllers();

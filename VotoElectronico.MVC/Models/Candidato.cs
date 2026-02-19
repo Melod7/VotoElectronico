@@ -1,19 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VotoElectronico.MVC.Models
+﻿namespace VotoElectronico.MVC.Models
 {
     public class Candidato
     {
         public int Id { get; set; }
+        public string Cargo { get; set; } = "";
+        public string Partido { get; set; } = "";
+        public int EleccionId { get; set; }
 
-        [Required]
-        public string Nombre { get; set; } = string.Empty;
+        public string NombrePresidente { get; set; } = "";
+        public string NombreVicepresidente { get; set; } = "";
 
-        [Required]
-        public string Cargo { get; set; } = string.Empty;
-
-        public int PartidoId { get; set; }
-        public Partido Partido { get; set; } = null!;
-
+        public string FotoPresidente { get; set; } = "";
+        public string FotoVicepresidente { get; set; } = "";
     }
 }

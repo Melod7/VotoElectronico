@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Login Administrador";
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4 mx-auto" style="max-width:500px;border-radius:20px;">
+        <h2 class="text-center mb-4">🔐 Administrador</h2>
+
+        <form method="post" action="/Auth/LoginAdmin">
+            <div class="mb-3">
+                <label>Correo</label>
+                <input type="email" name="correo" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <input type="password" name="password" class="form-control" required />
+            </div>
+
+            <button class="btn btn-dark w-100">Ingresar</button>
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+        }
+    </div>
+</div>

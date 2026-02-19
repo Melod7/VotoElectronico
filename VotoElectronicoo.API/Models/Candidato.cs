@@ -1,11 +1,34 @@
-﻿namespace VotoElectronicoo.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace VotoElectronicoo.API.Models
 {
+    [Table("Candidatos")]
     public class Candidato
     {
+        [Key]
+        [Column("Id")]
         public int Id { get; set; }
-        public string Nombre { get; set; } = string.Empty;
-        public string Cargo { get; set; } = string.Empty;
+
+        [Column("Cargo")]
+        public string Cargo { get; set; } = "";
+
+        [Column("Partido")]
+        public string Partido { get; set; } = "";
+
+        [Column("EleccionId")]
         public int EleccionId { get; set; }
-        public Eleccion Eleccion { get; set; } = null!;
+
+        [Column("NombrePresidente")]
+        public string NombrePresidente { get; set; } = "";
+
+        [Column("NombreVicepresidente")]
+        public string NombreVicepresidente { get; set; } = "";
+
+        [Column("FotoPresidente")]
+        public string FotoPresidente { get; set; } = "";
+
+        [Column("FotoVicepresidente")]
+        public string FotoVicepresidente { get; set; } = "";
     }
 }

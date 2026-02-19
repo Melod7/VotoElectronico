@@ -1,0 +1,42 @@
+﻿@model VotoElectronico.MVC.Models.Votante
+
+<a href="/Admin/PanelAdmin" class="btn btn-secondary mb-3">
+    ⬅ Volver al panel
+</a>
+
+<h2 class="mb-4">Registrar votante</h2>
+
+<form method="post" action="/Admin/CrearVotante">
+
+    <div class="mb-3">
+        <label>Cédula</label>
+        <input name="Cedula" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombres</label>
+        <input name="Nombres" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Apellidos</label>
+        <input name="Apellidos" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Número de Mesa</label>
+        <input name="Mesa" type="number" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Recinto Electoral</label>
+        <input name="Recinto" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Correo</label>
+        <input name="Correo" type="email" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary">Guardar</button>
+</form>

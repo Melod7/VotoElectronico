@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VotoElectronico.API.Data;
+using Microsoft.EntityFrameworkCore;
+using VotoElectronico.MVC.Models;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.Models;
 
-namespace VotoElectronico.API.Controllers
+namespace VotoElectronicoo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -14,19 +16,23 @@ namespace VotoElectronico.API.Controllers
         {
             _context = context;
         }
-
-        [HttpGet("{eleccionId}")]
-        public IActionResult GetResultados(int eleccionId)
+        [HttpGet]
+        public async Task<IActionResult> ObtenerResultados()
         {
-            var resultados = _context.Votos
-                .Where(v => v.Candidato.EleccionId == eleccionId)
-                .GroupBy(v => v.Candidato.Nombre)
-                .Select(g => new
+            // Total general de votos
+            var totalVotos = await _context.Votos.CountAsync();
+
+            // Resultados por candidato
+            var resultados = await _context.Candidatos
+                .Select(c => new ResultadoDTO
                 {
-                    Candidato = g.Key,
-                    Votos = g.Count()
+                    NombreCandidato = c.NombrePresidente,
+                    Partido = c.Partido,
+                    TotalVotos = _context.Votos.Count(v => v.CandidatoId == c.Id),
+                    Porcentaje = totalVotos == 0 ? 0 :
+                        (_context.Votos.Count(v => v.CandidatoId == c.Id) * 100.0) / totalVotos
                 })
-                .ToList();
+                .ToListAsync();
 
             return Ok(resultados);
         }

@@ -1,12 +1,11 @@
-﻿using global::VotoElectronico.API.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using VotoElectronicoo.API.DTOs;
+using VotoElectronicoo.API.Data;
 
-namespace VotoElectronico.API.Controllers
+namespace VotoElectronicoo.API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/bitacora")]
     public class BitacoraController : ControllerBase
     {
         private readonly VotoElectronicoContext _context;
@@ -17,21 +16,13 @@ namespace VotoElectronico.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetBitacora()
         {
-            var logs = await _context.Bitacoras
-                .OrderByDescending(b => b.Fecha)
-                .Select(b => new BitacoraDTO
-                {
-                    Fecha = b.Fecha,
-                    Rol = b.Rol,
-                    Accion = b.Accion,
-                    Descripcion = b.Descripcion,
-                    Ip = b.Ip
-                })
+            var lista = await _context.Bitacoras
+                .OrderByDescending(x => x.Fecha)
                 .ToListAsync();
 
-            return Ok(logs);
+            return Ok(lista);
         }
     }
 }

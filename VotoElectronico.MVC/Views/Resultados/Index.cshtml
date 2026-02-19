@@ -1,55 +1,27 @@
-﻿@model List<VotoElectronico.MVC.ViewModels.ResultadoViewModel>
+﻿@model List<VotoElectronico.MVC.Models.ResultadoDTO>
 
-@{
-    ViewData["Title"] = "Resultados";
-}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Resultados electorales</h2>
 
-<h2 class="mb-4">Resultados Generales</h2>
-
-<p><strong>Total de votos:</strong> @ViewBag.TotalVotos</p>
-
-<table class="table table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Candidato</th>
-            <th>Votos</th>
-            <th>Porcentaje</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var r in Model)
+    <div class="row">
+        @foreach (var item in Model)
         {
-            <tr>
-                <td>@r.Candidato</td>
-                <td>@r.TotalVotos</td>
-                <td>@r.Porcentaje.ToString("0.00") %</td>
-            </tr>
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+
+                        <img src="@item.FotoUrl"
+                             class="rounded-circle mb-2"
+                             width="120" height="120" />
+
+                        <h5>@item.NombreCandidato</h5>
+                        <p class="text-muted">@item.Partido</p>
+
+                        <h3 class="text-primary">@item.TotalVotos votos</h3>
+
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
-
-<hr />
-
-<h4>Gráfica de resultados</h4>
-
-<canvas id="grafico"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    const ctx = document.getElementById('grafico');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Candidato))),
-            datasets: [{
-                label: 'Votos',
-                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalVotos))),
-                backgroundColor: '#0d6efd'
-            }]
-        }
-    });
-</script>
-
-  
+    </div>
+</div>

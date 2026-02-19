@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Validar votante";
+}
+
+<style>
+    .pantalla {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0f2027, #2c5364);
+    }
+
+    .card-voto {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 420px;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+        .card-voto h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+    .btn-validar {
+        background: #28a745;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        color: white;
+        margin-top: 15px;
+    }
+
+        .btn-validar:hover {
+            background: #218838;
+        }
+</style>
+
+<div class="pantalla">
+
+    <div class="card-voto">
+
+        <h2>Validar votante</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form method="post" action="/JefeJunta/ValidarCedula">
+            <input name="cedula" class="form-control form-control-lg"
+                   placeholder="Ingrese la cédula del ciudadano"
+                   required />
+
+            <button type="submit" class="btn-validar">
+                Validar votante
+            </button>
+        </form>
+
+    </div>
+
+</div>

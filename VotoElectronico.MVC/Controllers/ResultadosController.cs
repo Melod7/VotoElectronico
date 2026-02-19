@@ -1,38 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VotoElectronico.MVC.Data;
-using VotoElectronico.MVC.ViewModels;
+using VotoElectronico.MVC.Models;
+using System.Net.Http.Json;
 
-
-public class ResultadosController : Controller
+namespace VotoElectronico.MVC.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public ResultadosController(ApplicationDbContext context)
+    public class ResultadosController : Controller
     {
-        _context = context;
-    }
+        private readonly HttpClient _http;
 
-    public IActionResult Index()
-    {
-        // Seguridad: solo administrador
-        var rol = HttpContext.Session.GetString("Rol");
-        if (rol != "Administrador")
-            return RedirectToAction("Index", "Auth");
+        public ResultadosController(IHttpClientFactory factory)
+        {
+            _http = factory.CreateClient("API");
+        }
 
-        var totalVotos = _context.Votos.Count();
+        public async Task<IActionResult> Index()
+        {
+            var resultados = await _http.GetFromJsonAsync<List<ResultadoDTO>>("api/resultados");
 
-        var resultados = _context.Candidatos
-            .Select(c => new ResultadoViewModel
-            {
-                Candidato = c.Nombre,
-                TotalVotos = _context.Votos.Count(v => v.CandidatoId == c.Id),
-                Porcentaje = totalVotos == 0 ? 0 :
-                    (double)_context.Votos.Count(v => v.CandidatoId == c.Id) * 100 / totalVotos
-            })
-            .ToList();
-
-        ViewBag.TotalVotos = totalVotos;
-
-        return View(resultados);
+            return View(resultados);
+        }
     }
 }

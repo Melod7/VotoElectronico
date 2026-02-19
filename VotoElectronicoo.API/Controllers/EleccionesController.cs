@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VotoElectronico.API.Data;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.Models;
+using VotoElectronicoo.API.DTOs;
 
-namespace VotoElectronico.API.Controllers
+
+namespace VotoElectronicoo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,0 +1,80 @@
+﻿@using VotoElectronico.MVC.Models
+@model List<Candidato>
+@{
+    ViewData["Title"] = "Votar";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg,#0d6efd,#021c3a);
+    }
+
+    .card-voto {
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        transition: 0.3s;
+    }
+
+        .card-voto:hover {
+            transform: scale(1.03);
+        }
+
+    .partido {
+        font-weight: bold;
+        font-size: 20px;
+        color: #0d6efd;
+    }
+
+    .foto {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        object-fit: cover;
+        border: 3px solid #0d6efd;
+    }
+
+    .btn-votar {
+        border-radius: 30px;
+        font-size: 18px;
+    }
+</style>
+
+<div class="container mt-5">
+
+    <h2 class="text-center text-white mb-5">🗳️ ELECCIONES PRESIDENCIALES</h2>
+
+    <div class="row">
+
+        @foreach (var c in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card card-voto p-4 text-center">
+
+                    <div class="partido">@c.Partido</div>
+
+                    <hr />
+
+                    <img src="@c.FotoPresidente" class="foto mb-2" />
+                    <h5>Presidente</h5>
+                    <p>@c.NombrePresidente</p>
+
+                    <img src="@c.FotoVicepresidente" class="foto mb-2 mt-3" />
+                    <h5>Vicepresidente</h5>
+                    <p>@c.NombreVicepresidente</p>
+
+                    <form method="post" action="/Votante/Votar">
+                        <input type="hidden" name="candidatoId" value="@c.Id" />
+
+                        <button class="btn btn-success w-100 btn-votar mt-3">
+                            🗳️ VOTAR
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

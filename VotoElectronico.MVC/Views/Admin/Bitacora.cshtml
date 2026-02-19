@@ -1,0 +1,31 @@
+﻿@model List<VotoElectronico.MVC.Models.Bitacora>
+
+<h2 class="mb-4">📘 Bitácora del sistema</h2>
+
+<a href="/Admin/PanelAdmin" class="btn btn-secondary mb-3">
+    ⬅ Volver al panel
+</a>
+
+<table class="table table-striped table-bordered shadow">
+    <thead class="table-dark">
+        <tr>
+            <th>Cédula</th>
+            <th>Acción</th>
+            <th>Mesa</th>
+            <th>Recinto</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.Cedula</td>
+                <td>@b.Accion</td>
+                <td>@b.Mesa</td>
+                <td>@b.Recinto</td>
+                <td>@b.Fecha.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>

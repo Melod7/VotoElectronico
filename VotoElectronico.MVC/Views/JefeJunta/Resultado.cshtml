@@ -1,0 +1,15 @@
+﻿<h2>Verificar Votante</h2>
+
+<form asp-action="GenerarCodigo" method="post">
+    <div class="mb-3">
+        <label>Cédula del votante</label>
+        <input name="cedula" class="form-control" required />
+    </div>
+
+    <button class="btn btn-primary">Generar Código</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+}

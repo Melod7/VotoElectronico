@@ -1,73 +1,101 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using VotoElectronico.MVC.Data;
+using Newtonsoft.Json;
 using VotoElectronico.MVC.Models;
 
-public class AdminController : Controller
+namespace VotoElectronico.MVC.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public AdminController(ApplicationDbContext context)
+    public class AdminController : Controller
     {
-        _context = context;
-    }
+        private readonly HttpClient _http;
 
-    // Dashboard
-    public IActionResult Index()
-    {
-        var partidos = _context.Partidos
-            .Include(p => p.Candidatos)
-            .ToList();
+        public AdminController(IHttpClientFactory factory)
+        {
+            _http = factory.CreateClient();
+            _http.BaseAddress = new Uri("https://localhost:7126/");
+        }
 
-        return View(partidos);
-    }
+        // PANEL
+        public IActionResult PanelAdmin()
+        {
+            return View();
+        }
 
-    // Crear partido
-    [HttpGet]
-    public IActionResult CrearPartido()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult CrearPartido(string nombre)
-    {
-        _context.Partidos.Add(new Partido { Nombre = nombre });
-        _context.SaveChanges();
-        return RedirectToAction("Index");
-    }
-
-    // Crear candidatos
-    [HttpGet]
-    public IActionResult CrearCandidatos(int id)
-    {
-        var partido = _context.Partidos.Find(id);
-        return View(partido);
-    }
-
-    [HttpPost]
-    public IActionResult CrearCandidatos(
-        int partidoId,
-        string presidente,
-        string vicepresidente)
-    {
-        _context.Candidatos.AddRange(
-            new Candidato
+        // ===============================
+        // CANDIDATOS
+        // ===============================
+        public async Task<IActionResult> Candidatos()
+        {
+            try
             {
-                Nombre = presidente,
-                Cargo = "Presidente",
-                PartidoId = partidoId
-            },
-            new Candidato
-            {
-                Nombre = vicepresidente,
-                Cargo = "Vicepresidente",
-                PartidoId = partidoId
+                var response = await _http.GetAsync("api/Candidatos");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    ViewBag.Error = "No se pudo conectar con API";
+                    return View(new List<Candidato>());
+                }
+
+                var data = await response.Content.ReadAsStringAsync();
+                var lista = JsonConvert.DeserializeObject<List<Candidato>>(data);
+
+                return View(lista);
             }
-        );
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View(new List<Candidato>());
+            }
+        }
 
-        _context.SaveChanges();
-        return RedirectToAction("Index");
+        // ===============================
+        // VOTANTES
+        // ===============================
+        public async Task<IActionResult> Votantes()
+        {
+            var lista = await _http.GetFromJsonAsync<List<Votante>>("api/votantes");
+            return View(lista);
+        }
+
+        public async Task<IActionResult> EliminarVotante(string Cedula)
+        {
+            await _http.DeleteAsync($"api/votantes/{Cedula}");
+            return RedirectToAction("Votantes");
+        }
+        // ===============================
+        // BITACORA
+        // ===============================
+        public async Task<IActionResult> Bitacora()
+        {
+            var lista = await _http.GetFromJsonAsync<List<Bitacora>>("api/bitacora");
+            return View(lista);
+        }
+
+        // ===============================
+        // CREAR VOTANTE (GET)
+        // ===============================
+        public IActionResult CrearVotante()
+        {
+            return View();
+        }
+
+        // ===============================
+        // CREAR VOTANTE (POST)
+        // ===============================
+        [HttpPost]
+        public async Task<IActionResult> CrearVotante(Votante votante)
+        {
+            votante.YaVoto = false;
+
+            var response = await _http.PostAsJsonAsync("api/votantes", votante);
+
+            return RedirectToAction("Votantes");
+        
+        }
+
+        public async Task<IActionResult> Resultados()
+        {
+            var resultados = await _http.GetFromJsonAsync<List<ResultadoVM>>("api/resultados");
+            return View(resultados);
+        }
     }
 }

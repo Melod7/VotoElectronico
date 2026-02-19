@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VotoElectronico.API.Data;
+using Microsoft.EntityFrameworkCore;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.Models;
 
-namespace VotoElectronico.API.Controllers
+namespace VotoElectronicoo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -15,20 +16,19 @@ namespace VotoElectronico.API.Controllers
             _context = context;
         }
 
-        [HttpGet("{eleccionId}")]
-        public IActionResult GetByEleccion(int eleccionId)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            return Ok(_context.Candidatos
-                .Where(c => c.EleccionId == eleccionId)
-                .ToList());
+            var lista = await _context.Candidatos.ToListAsync();
+            return Ok(lista);
         }
 
         [HttpPost]
-        public IActionResult Create(Candidato candidato)
+        public async Task<IActionResult> Crear([FromBody] Candidato c)
         {
-            _context.Candidatos.Add(candidato);
-            _context.SaveChanges();
-            return Ok(candidato);
+            _context.Candidatos.Add(c);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

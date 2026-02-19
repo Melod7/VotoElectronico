@@ -1,41 +1,125 @@
-﻿@model List<Candidato>
+﻿@model List<VotoElectronico.MVC.Models.Candidato>
+
 @{
-    var partidos = ViewBag.Partidos as List<Partido>;
+    ViewData["Title"] = "Candidatos";
 }
 
-<h3>🧑‍💼 Candidatos</h3>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<form asp-action="CrearCandidato" method="post" class="row g-2 mb-4">
-    <div class="col-md-4">
-        <input name="Nombre" class="form-control" placeholder="Nombre del candidato" required />
-    </div>
-    <div class="col-md-4">
-        <select name="PartidoId" class="form-control" required>
-            @foreach (var p in partidos)
-            {
-                <option value="@p.Id">@p.Nombre</option>
-            }
-        </select>
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-success">Agregar</button>
-    </div>
-</form>
+<style>
 
-<table class="table table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Nombre</th>
-            <th>Partido</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var c in Model)
-        {
-            <tr>
-                <td>@c.Nombre</td>
-                <td>@c.Partido.Nombre</td>
-            </tr>
+    body {
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        min-height: 100vh;
+    }
+
+    /* botón volver */
+    .btn-panel {
+        background: #198754;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    }
+
+        .btn-panel:hover {
+            background: #157347;
+            transform: scale(1.05);
         }
-    </tbody>
-</table>
+
+    /* tarjetas */
+    .card {
+        border-radius: 18px;
+        box-shadow: 0px 8px 18px rgba(0,0,0,0.2);
+    }
+
+    /* imágenes completas */
+    .img-candidato {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* título */
+    .titulo {
+        color: white;
+        font-weight: bold;
+    }
+
+</style>
+
+<div class="container mt-4">
+
+    <!-- BOTÓN VOLVER -->
+    <a href="/Admin/PanelAdmin" class="btn-panel mb-4">
+        ← Volver al panel administrador
+    </a>
+
+    <h2 class="text-center titulo mb-4">🏛️ Partidos políticos participantes</h2>
+
+    <div class="row">
+
+        <!-- ADN -->
+        <div class="col-md-6 mb-4">
+            <div class="card p-4">
+
+                <h4 class="text-center text-primary mb-4">ADN</h4>
+
+                <div class="row">
+
+                    <!-- PRESIDENTE -->
+                    <div class="col-md-6 text-center">
+                        <img src="~/images/noboa.jpg" class="img-candidato mb-3" />
+
+                        <h5 class="fw-bold">Daniel Noboa</h5>
+                        <span class="text-muted">Presidente</span>
+                    </div>
+
+                    <!-- VICE -->
+                    <div class="col-md-6 text-center">
+                        <img src="~/images/pinto.jpg" class="img-candidato mb-3" />
+
+                        <h5 class="fw-bold">María José Pinto</h5>
+                        <span class="text-muted">Vicepresidenta</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- REVOLUCIÓN CIUDADANA -->
+        <div class="col-md-6 mb-4">
+            <div class="card p-4">
+
+                <h4 class="text-center text-danger mb-4">Revolución Ciudadana</h4>
+
+                <div class="row">
+
+                    <!-- PRESIDENTE -->
+                    <div class="col-md-6 text-center">
+                        <img src="~/images/gonzalez.jpg" class="img-candidato mb-3" />
+
+                        <h5 class="fw-bold">Luisa González</h5>
+                        <span class="text-muted">Presidenta</span>
+                    </div>
+
+                    <!-- VICE -->
+                    <div class="col-md-6 text-center">
+                        <img src="~/images/arauz.jpg" class="img-candidato mb-3" />
+
+                        <h5 class="fw-bold">Andrés Arauz</h5>
+                        <span class="text-muted">Vicepresidente</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

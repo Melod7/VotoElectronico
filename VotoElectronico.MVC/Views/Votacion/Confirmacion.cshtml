@@ -1,2 +1,25 @@
-﻿<h2>✅ Voto registrado correctamente</h2>
-<p>Gracias por participar en el proceso democrático.</p>
+﻿@{
+    ViewData["Title"] = "Confirmación de voto";
+}
+
+<div class="container mt-5 text-center">
+
+    <div class="card shadow-lg p-5">
+
+        <h2 class="text-success mb-3">🗳️ Voto registrado correctamente</h2>
+
+        <p class="lead">
+            Su participación ha sido guardada en el sistema.
+        </p>
+
+        <p>
+            Gracias por ejercer su derecho democrático.
+        </p>
+
+        <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="Index">
+            Finalizar
+        </a>
+
+    </div>
+
+</div>

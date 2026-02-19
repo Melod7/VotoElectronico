@@ -8,5 +8,10 @@ namespace VotoElectronico.MVC.Controllers
         {
             return View();
         }
+
+        public IActionResult Ingresar()
+        {
+            return View();
+        }
     }
 }

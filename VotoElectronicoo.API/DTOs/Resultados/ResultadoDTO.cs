@@ -2,7 +2,9 @@
 {
     public class ResultadoDTO
     {
-        public string Candidato { get; set; } = string.Empty;
+        public string Partido { get; set; } = "";
         public int TotalVotos { get; set; }
+        public string NombreCandidato { get; set; } = "";
+        public string FotoUrl { get; set; } = "";
     }
 }

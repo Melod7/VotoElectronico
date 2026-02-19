@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Panel Administrador";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+
+    /* FONDO GENERAL */
+    body {
+        background: linear-gradient(135deg,#e3f2fd,#bbdefb,#90caf9);
+        min-height: 100vh;
+        font-family: 'Segoe UI',sans-serif;
+    }
+
+    /* NAV SUPERIOR */
+    .nav-admin {
+        background: #0d47a1;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .nav-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+    }
+
+    /* BOTON CERRAR */
+    .btn-salir {
+        background: #ef5350;
+        border: none;
+        padding: 8px 22px;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-salir:hover {
+            background: #FFCACA;
+        }
+
+    /* CONTENEDOR CENTRAL */
+    .panel-box {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+    }
+
+    /* TITULO */
+    .titulo {
+        color: #000000;
+        font-weight: bold;
+    }
+
+    /* TARJETAS */
+    .card-admin {
+        border-radius: 18px;
+        padding: 30px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.25s ease;
+        box-shadow: 0px 8px 18px rgba(0,0,0,0.1);
+    }
+
+        .card-admin:hover {
+            transform: scale(1.04);
+        }
+
+    /* COLORES TARJETAS */
+    .card-candidatos {
+        background: #42a5f5;
+        color: #333;
+    }
+
+    .card-votantes {
+        background: #66bb6a;
+        color: #333;
+    }
+
+    .card-resultados {
+        background: #ffca28;
+        color: #333;
+    }
+
+    .card-bitacora {
+        background: #78909c;
+        color: #333;
+    }
+
+</style>
+
+<!-- NAV -->
+<div class="nav-admin">
+
+    <div class="nav-title">
+        🗳️ Sistema de Voto Electrónico Ecuador
+    </div>
+
+    <a href="/Home/Index" class="btn-salir">
+        Cerrar sesión
+    </a>
+
+</div>
+
+
+<div class="container mt-5">
+
+    <div class="panel-box">
+
+        <h2 class="text-center titulo mb-5">Panel Administrador</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <a href="/Admin/Candidatos" style="text-decoration:none;">
+                    <div class="card-admin card-candidatos">
+                        🏛️ Ver candidatos
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="/Admin/Votantes" style="text-decoration:none;">
+                    <div class="card-admin card-votantes">
+                        👥 Ver votantes por mesa
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="/Admin/Resultados" style="text-decoration:none;">
+                    <div class="card-admin card-resultados">
+                        📊 Resultados y gráficas
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="/Admin/Bitacora" style="text-decoration:none;">
+                    <div class="card-admin card-bitacora">
+                        📁 Bitácora del sistema
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

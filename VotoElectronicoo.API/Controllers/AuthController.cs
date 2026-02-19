@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VotoElectronico.API.Data;
+using VotoElectronicoo.API.Data;
 using VotoElectronicoo.API.DTOs.Auth;
 
-namespace VotoElectronico.API.Controllers
-{
-    [ApiController]
+namespace VotoElectronicoo.API.Controllers
+{ 
+
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly VotoElectronicoContext _context;
@@ -15,22 +16,24 @@ namespace VotoElectronico.API.Controllers
             _context = context;
         }
 
-        [HttpPost("login-codigo")]
-        public IActionResult LoginConCodigo(LoginCodigoDTO dto)
-        {
-            var usuario = _context.Usuarios
-                .FirstOrDefault(u => u.Cedula == dto.Cedula);
-
-            if (usuario == null)
-                return Unauthorized("Usuario no encontrado");
-
-            return Ok("Login correcto (simulado)");
-        }
-
+        // LOGIN ADMIN
         [HttpPost("login-admin")]
-        public IActionResult LoginAdmin(LoginAdminDTO dto)
+        public IActionResult LoginAdmin([FromBody] LoginAdminDTO dto)
         {
-            return Ok("Admin logueado (simulado)");
+            var admin = _context.Administradores
+                .FirstOrDefault(x => x.Correo == dto.Correo && x.Password == dto.Password);
+
+            if (admin == null)
+                return Unauthorized("Correo o contraseña incorrectos");
+
+            return Ok(admin);
         }
+    }
+
+    public class LoginAdminDTO
+    {
+        public string Correo { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    
     }
 }

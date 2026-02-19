@@ -1,6 +1,9 @@
 ﻿@model List<Partido>
 
 <h3>🏳️ Partidos Políticos</h3>
+<a href="/Admin/PanelAdmin" class="btn btn-secondary mb-3">
+    ⬅ Volver al panel
+</a>
 
 <form asp-action="CrearPartido" method="post" class="mb-4">
     <input name="Nombre" class="form-control mb-2" placeholder="Nombre del partido" required />

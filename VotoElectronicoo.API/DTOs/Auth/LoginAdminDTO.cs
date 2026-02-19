@@ -2,7 +2,7 @@
 {
     public class LoginAdminDTO
     {
-        public string Usuario { get; set; } = string.Empty;
-        public string contraseña { get; set; } = string.Empty;
+        public string Correo { get; set; } = "";
+        public string Password { get; set; } = "";
     }
 }

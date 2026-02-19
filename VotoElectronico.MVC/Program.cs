@@ -1,36 +1,24 @@
-using Microsoft.EntityFrameworkCore;
-using VotoElectronico.MVC.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient("api", client =>
-{
-    client.BaseAddress = new Uri("https://localhost:5001/"); 
-});
-
+builder.Services.AddSession();
+// MVC
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
+// HttpClient hacia API
+builder.Services.AddHttpClient("API", c =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    c.BaseAddress = new Uri("https://localhost:7126/");
 });
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
 
 var app = builder.Build();
 
-
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+app.UseSession();
 app.UseStaticFiles();
 app.UseRouting();
-
-app.UseSession();      
-
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
