@@ -1,75 +1,107 @@
 ﻿@model List<VotoElectronico.MVC.Models.Votante>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="container mt-4">
 
-    <a href="/Admin/PanelAdmin" class="btn btn-secondary mb-3">
-        ⬅ Volver al panel
-    </a>
+    <!-- BOTONES SUPERIORES -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <a class="btn btn-success" href="/Admin/CrearVotante">
-        ➕ Registrar nuevo votante
-    </a>
+        <a href="/Admin/PanelAdmin" class="btn btn-outline-secondary">
+            ⬅ Volver al panel
+        </a>
+
+        <a class="btn btn-success" href="/Admin/CrearVotante">
+            ➕ Registrar nuevo votante
+        </a>
+
+    </div>
+
+    <!-- TITULO -->
+    <div class="mb-3">
+        <h2 class="fw-bold">📋 Padrón Electoral</h2>
+        <p class="text-muted">Listado oficial de votantes registrados</p>
+    </div>
+
+    <!-- TARJETA CONTENEDORA -->
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Recinto Electoral</th>
+                            <th>Mesa</th>
+                            <th>Correo</th>
+                            <th>¿Votó?</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+
+                        @foreach (var v in Model)
+                        {
+                            <tr>
+
+                                <td class="fw-semibold">@v.Cedula</td>
+
+                                <td>@v.Nombres</td>
+
+                                <td>@v.Apellidos</td>
+
+                                <td>
+                                    <span class="badge bg-info text-dark px-3 py-2">
+                                        @v.Recinto
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-primary px-3 py-2">
+                                        Mesa @v.Mesa
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @(string.IsNullOrEmpty(v.Correo) ?
+                                                                    "<span class='text-muted'>Sin correo</span>" 
+                                                                                    : v.Correo)
+                                </td>
+
+                                <td>
+                                    @if (v.YaVoto)
+                                    {
+                                        <span class="badge bg-success px-3 py-2">✔ Sí</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger px-3 py-2">✖ No</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-sm btn-danger px-3"
+                                       href="/Admin/EliminarVotante?cedula=@v.Cedula"
+                                       onclick="return confirm('¿Seguro que deseas eliminar este votante?');">
+                                        🗑 Eliminar
+                                    </a>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
 
 </div>
-
-<h2 class="mb-3">📋 Padrón Electoral</h2>
-
-<table class="table table-striped table-hover shadow">
-    <thead class="table-dark">
-        <tr>
-            <th>Cédula</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Recinto Electoral</th>
-            <th>Número de Mesa</th>
-            <th>Correo</th>
-            <th>¿Votó?</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var v in Model)
-        {
-            <tr>
-                <td>@v.Cedula</td>
-                <td>@v.Nombres</td>
-                <td>@v.Apellidos</td>
-
-                <td>
-                    <span class="badge bg-info text-dark">
-                        @v.Recinto
-                    </span>
-                </td>
-
-                <td>
-                    <span class="badge bg-primary">
-                        Mesa @v.Mesa
-                    </span>
-                </td>
-
-                <td>
-                    @(string.IsNullOrEmpty(v.Correo) ? "Sin correo" : v.Correo)
-                </td>
-
-                <td>
-                    @if (v.YaVoto)
-                    {
-                        <span class="badge bg-success">Sí</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">No</span>
-                    }
-                </td>
-
-                <td>
-                    <a class="btn btn-sm btn-danger"
-                       href="/Admin/EliminarVotante?cedula=@v.Cedula"
-                       onclick="return confirm('¿Seguro que deseas eliminar este votante?');">
-                        🗑 Eliminar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
